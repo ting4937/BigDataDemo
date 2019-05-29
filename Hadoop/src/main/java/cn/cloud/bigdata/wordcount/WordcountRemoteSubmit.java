@@ -54,7 +54,7 @@ public class WordcountRemoteSubmit {
 
         //指定job输入文件或目录
         FileInputFormat.setInputPaths(job, new Path("/wordcount/input"));
-        FileSystem fs = FileSystem.get(new URI("hdfs://cloudserver:9000"), conf, "root");
+        FileSystem fs = FileSystem.get(conf);
         Path output = new Path("/wordcount/output");
         if(fs.exists(output)) {
             fs.delete(output, true);

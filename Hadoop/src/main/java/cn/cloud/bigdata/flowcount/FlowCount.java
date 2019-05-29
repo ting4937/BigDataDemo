@@ -1,5 +1,6 @@
 package cn.cloud.bigdata.flowcount;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -11,6 +12,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -35,24 +37,22 @@ public class FlowCount {
         job.setMapperClass(FlowCountMapper.class);
         //指定本业务job使用的reduce业务类
         job.setReducerClass(FlowCountReduce.class);
-        //指定mapper输入输出类型
+        //指定mapper输出类型
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(FlowBean.class);
-        //指定输出结果的输入输出类型
+        //指定输出结果的输出类型
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FlowBean.class);
 
-        //指定job输入文件
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
-
-        //如果outpath存在则删除
-        Path outPath = new Path(args[1]);
-        FileSystem fs = FileSystem.get(conf);
-        if(fs.exists(outPath)) {
-            fs.delete(outPath, true);
-        }
+        //指定job输入目录
+        //运行在windows环境可以写windows路径
+        //运行在hadoop集群写hdfs路径
+        FileInputFormat.setInputPaths(job, new Path("F:\\01_data\\hadoop\\input"));
         //指定job输出结果所在目录
-        FileOutputFormat.setOutputPath(job, outPath);
+        String outputPath = "F:\\01_data\\hadoop\\output";
+        File outputDir = new File(outputPath);
+        FileUtils.deleteDirectory(outputDir);
+        FileOutputFormat.setOutputPath(job, new Path(outputPath));
 
         //将job中配置的相关参数以及jar包提交给yarn去运行
         //job.submit();
@@ -66,7 +66,7 @@ public class FlowCount {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             //获取一行数据
             String line = value.toString();
-            String[] fields = line.split("/t");
+            String[] fields = line.split("\t");
             if(fields.length < 4) {
                 return;
             }
