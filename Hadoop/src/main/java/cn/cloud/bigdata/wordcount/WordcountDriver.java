@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
  * 相当于一个yarn集群的客户端
  * 需要在此封装我们的mr程序的相关运行参数，指定jar包
  * 最后提交给yarn
+ * 运行hadoop jar wordcount.jar /wordcount/input /wordcount/output
  */
 public class WordcountDriver {
     public static void main(String[] args) throws Exception {
@@ -35,7 +36,7 @@ public class WordcountDriver {
         //指定mapper输入输出类型
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
-        //指定输出结果的输入输出类型
+        //指定最终输出结果的输入输出类型
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

@@ -43,10 +43,11 @@ public class FlowCount {
         job.setOutputValueClass(FlowBean.class);
 
         //指定job输入文件
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
-
+        //FileInputFormat.setInputPaths(job, new Path(args[0]));
+        //使用本地文件
+        FileInputFormat.setInputPaths(job, new Path("F:\\flow.log"));
         //如果outpath存在则删除
-        Path outPath = new Path(args[1]);
+        Path outPath = new Path("F:\\out.txt");
         FileSystem fs = FileSystem.get(conf);
         if(fs.exists(outPath)) {
             fs.delete(outPath, true);
@@ -66,7 +67,7 @@ public class FlowCount {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             //获取一行数据
             String line = value.toString();
-            String[] fields = line.split("/t");
+            String[] fields = line.split("\t");
             if(fields.length < 4) {
                 return;
             }

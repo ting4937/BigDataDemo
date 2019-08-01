@@ -18,6 +18,7 @@ public class FlowBean implements Writable {
     private long downflow;
     private long totalflow;
 
+    //反序列化时，需要反射调用空参构造函数，所以要显示定义一个
     public FlowBean() {
 
     }
