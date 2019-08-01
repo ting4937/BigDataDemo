@@ -19,7 +19,7 @@ public class AppTest {
     public void init() throws Exception {
         Configuration conf = new Configuration();
         //conf.set("fs.defaultFS", "hdfs://test1:9000");
-        fs = FileSystem.get(new URI("hdfs://test1:9000"), conf, "root");
+        fs = FileSystem.get(new URI("hdfs://cloudserver:9000"), conf, "root");
     }
 
     @After
