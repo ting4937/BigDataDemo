@@ -3,13 +3,20 @@ package cn.cloud
 /**
   * Description: 
   *
-  * @author: Cloud
   *          Date: 2019-08-01
   *          Time: 13:31
   */
 object WordCount {
   def main(args: Array[String]): Unit = {
-    val arr1 = new Array[Int](8)
-    println(arr1)
+    var name = "cloud"
+    println(s"my name is $name")
+    println(sum(1, 2))
+    sayHello
   }
+
+  def sum(x: Int, y: Int) = {
+    x + y
+  }
+
+  def sayHello = println("hello")
 }
